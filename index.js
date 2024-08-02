@@ -26,10 +26,20 @@ app.use(express.json());
 app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
+// check if the url is valid
+const dns = require('dns');
 
-// Your first API endpoint
+function isValidUrl(url){
+  const urlPattern = new RegExp('^(http|https)://', 'i')
+  return urlPattern.test(url);
+}
+
+// POST API
 app.post('/api/shorturl',  async (req, res) => {
   const { url } = req.body
+  if(!isValidUrl(url)){
+    return res.json({error: 'invalid url'});
+  }
   const shortUrl = shortId.generate();
   //create new url
   const newUrl = new ShortURL({
