@@ -49,8 +49,16 @@ app.post("/api/shorturl", async (req, res) => {
   if (!isValidUrl(url)) {
     return res.json({ error: "invalid url" });
   }
-  const shortUrl = shortId.generate();
+  //check for existing url
+  const existingUrl = await ShortURL.findOne({ original_url: url });
+  if(existingUrl){
+    return res.json({original_url: existingUrl.original_url, short_url: existingUrl.short_url});
+  }
+
+
+  
   //create new url
+  const shortUrl = shortId.generate();
   const newUrl = new ShortURL({
     original_url: url,
     short_url: shortUrl,
