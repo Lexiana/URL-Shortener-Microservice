@@ -21,6 +21,8 @@ app.use(cors());
 
 app.use('/public', express.static(`${process.cwd()}/public`));
 
+app.use(express.json());
+
 app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
@@ -28,6 +30,12 @@ app.get('/', function(req, res) {
 // Your first API endpoint
 app.post('/api/shorturl',  async (req, res) => {
   const { url } = req.body
+  const shortUrl = shortId.generate();
+  //create new url
+  const newUrl = new ShortURL({
+    original_url: url,
+    short_url: shortUrl
+  })
   res.json({ greeting: 'hello API' });
 });
 
