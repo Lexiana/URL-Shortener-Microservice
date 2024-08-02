@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
+const shortId = require('shortid');
 
 const urlShema = new mongoose.Schema({
   original_url: String,
@@ -25,8 +26,8 @@ app.get('/', function(req, res) {
 });
 
 // Your first API endpoint
-app.post('/api/shorturl', function(req, res) {
-  console.log(req.body);
+app.post('/api/shorturl',  async (req, res) => {
+  const { url } = req.body
   res.json({ greeting: 'hello API' });
 });
 
