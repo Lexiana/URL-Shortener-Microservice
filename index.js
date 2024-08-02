@@ -2,9 +2,19 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const mongoose = require('mongoose');
+
+const urlShema = new mongoose.Schema({
+  original_url: String,
+  short_url: String
+})
+
+const ShortURL = mongoose.model('ShortURL', urlShema);
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
+
+app.use(express.urlencoded({extended: true}))
 
 app.use(cors());
 
@@ -15,7 +25,8 @@ app.get('/', function(req, res) {
 });
 
 // Your first API endpoint
-app.get('/api/hello', function(req, res) {
+app.post('/api/shorturl', function(req, res) {
+  console.log(req.body);
   res.json({ greeting: 'hello API' });
 });
 
